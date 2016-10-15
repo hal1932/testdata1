@@ -22,7 +22,7 @@ var cItemCoutnPerShop = new KeyValuePair<int, int>(1, 20);
 var cItemPrice = new KeyValuePair<int, int>(1, 1000);
 var cItemPriceFactor = 10;
 
-var cMaxThreadCount = 8;
+var cMaxThreadCount = 16;
 
 var rand = new Random(1234567890);
 var lockObj = new object();
@@ -253,40 +253,12 @@ IEnumerable<Dictionary<string, object>> Query(MySqlConnection conn, string query
     var adapter = new MySqlDataAdapter(query, conn);
     var data = new DataTable();
     adapter.Fill(data);
-
-    foreach (DataRow row in data.Rows)
-    {
-        var item = new Dictionary<string, object>();
-        foreach (DataColumn col in data.Columns)
-        {
-            item[col.ColumnName] = row[col];
-        }
-        yield return item;
-    }
+    
+    var columns = data.Columns.Cast<DataColumn>().ToArray();
+    return data.Rows.Cast<DataRow>().Select(row => columns.ToDictionary(col => col.ColumnName, col => row[col]));
 }
 
-object QueryScalar(MySqlConnection conn, string query)
-{
-    var command = new MySqlCommand(query, conn);
-    command.CommandTimeout = 0;
-    return command.ExecuteScalar();
-}
-
-int NonQuery(MySqlConnection conn, string query)
-{
-    var command = new MySqlCommand(query, conn);
-    command.CommandTimeout = 0;
-    return command.ExecuteNonQuery();
-}
-
-string CalcRelativePath(string path, string root)
-{
-    var relativeUrl = new Uri(root + Path.DirectorySeparatorChar)
-        .MakeRelativeUri(new Uri(path));
-    return relativeUrl.ToString().Replace(Path.DirectorySeparatorChar, '/');
-}
-
-string CalcDateTimeStr(DateTime value)
-{
-    return value.ToString("yyyy-MM-dd HH:mm:ss");
-}
+object QueryScalar(MySqlConnection conn, string query) => new MySqlCommand(query, conn) { CommandTimeout = 0 }.ExecuteScalar();
+int NonQuery(MySqlConnection conn, string query) => new MySqlCommand(query, conn) { CommandTimeout = 0 }.ExecuteNonQuery();
+string CalcRelativePath(string path, string root) => new Uri(root + Path.DirectorySeparatorChar).MakeRelativeUri(new Uri(path)).ToString().Replace(Path.DirectorySeparatorChar, '/');
+string CalcDateTimeStr(DateTime value) => value.ToString("yyyy-MM-dd HH:mm:ss");
