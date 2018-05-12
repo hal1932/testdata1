@@ -72,7 +72,7 @@ void Main(string[] args)
     ThreadPool.SetMinThreads(1, 1);
     ThreadPool.SetMaxThreads(8, 8);
 
-    // ÉeÅ[ÉuÉãèâä˙âª
+    // „ÉÜ„Éº„Éñ„É´ÂàùÊúüÂåñ
     using (var conn = OpenConnection())
     {
         NonQuery(conn, "start transaction");
@@ -87,7 +87,7 @@ void Main(string[] args)
         NonQuery(conn, "commit");
     }
     
-    // ÉtÉ@ÉCÉãìoò^
+    // „Éï„Ç°„Ç§„É´ÁôªÈå≤
     {
         var filelists = Enumerable.Range(0, cMaxThreadCount)
             .Select(_ => new List<string>())
@@ -128,7 +128,7 @@ void Main(string[] args)
         });
     }
 
-    // ÉÇÉfÉãÅAÉeÉNÉXÉ`ÉÉìoò^
+    // „É¢„Éá„É´„ÄÅ„ÉÜ„ÇØ„Çπ„ÉÅ„É£ÁôªÈå≤
     {
         var modellists = Enumerable.Range(0, cMaxThreadCount)
             .Select(_ => new List<Model>())
@@ -158,7 +158,7 @@ void Main(string[] args)
             {
                 NonQuery(conn, "start transaction");
 
-                // ÉÇÉfÉã
+                // „É¢„Éá„É´
                 foreach (var model in models)
                 {
                     ulong modelId = 0;
@@ -183,7 +183,7 @@ void Main(string[] args)
                         }
                     }
 
-                    // ÉeÉNÉXÉ`ÉÉ
+                    // „ÉÜ„ÇØ„Çπ„ÉÅ„É£
                     foreach (var tex in model.Textures)
                     {
                         var name = Path.GetFileNameWithoutExtension(tex.Name);

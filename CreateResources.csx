@@ -19,7 +19,7 @@ var rand = new Random(1234567890);
 
 var lockObj = new object();
 
-// ƒ‚ƒfƒ‹AŒÂ•ÊƒeƒNƒXƒ`ƒƒ
+// ãƒ¢ãƒ‡ãƒ«ã€å€‹åˆ¥ãƒ†ã‚¯ã‚¹ãƒãƒ£
 Parallel.For(0, cModelCount, (i) =>
 {
     // mdl
@@ -49,7 +49,7 @@ Parallel.For(0, cModelCount, (i) =>
     }
 });
 
-// ‹¤’ÊƒeƒNƒXƒ`ƒƒ
+// å…±é€šãƒ†ã‚¯ã‚¹ãƒãƒ£
 var commonDir = Path.Combine(modelRootDir.FullName, "common");
 var commonTexDir = CreateDirectory(Path.Combine(commonDir, "textures"));
 var commonTextures = new List<FileInfo>();
@@ -73,7 +73,7 @@ Parallel.ForEach(modelDic, (item) =>
     }
 });
 
-// ƒ‚ƒfƒ‹’è‹`ƒtƒ@ƒCƒ‹
+// ãƒ¢ãƒ‡ãƒ«å®šç¾©ãƒ•ã‚¡ã‚¤ãƒ«
 Parallel.ForEach(modelDic, (item) =>
 {
     var model = item.Key;
